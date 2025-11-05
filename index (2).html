@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSPT Hub - Sree Siddarameshwara Polytechnic, Tiptur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+                 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+        
+        .dark-mode {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+        }
+        
+        .dark-mode .bg-white {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+        
+        .dark-mode .text-gray-800 {
+            color: #f1f5f9;
+        }
+        
+        .dark-mode .text-gray-600 {
+            color: #cbd5e1;
+        }
+        
+        .dark-mode .bg-gray-100 {
+            background-color: #475569;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        .bot-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 18px 18px 18px 4px;
+            margin-right: auto;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+            margin-left: auto;
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.7);
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .message-transition {
+            animation: messageAppear 0.3s ease-out;
+        }
+        
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .branch-card {
+            transition: all 0.3s ease;
+        }
+        
+        .branch-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .seats-full {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .seats-available {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .seats-few {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message-send {
+            animation: messageSend 0.3s ease-out;
+        }
+
+        @keyframes messageSend {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .chatbot-icon {
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 7% { transform: rotateZ(0); }
+            15% { transform: rotateZ(-5deg); }
+            20% { transform: rotateZ(5deg); }
+            25% { transform: rotateZ(-5deg); }
+            30% { transform: rotateZ(3deg); }
+            35% { transform: rotateZ(-2deg); }
+            40%, 100% { transform: rotateZ(0); }
+        }
+
+        .stagger-load {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stagger-load.animated {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .stagger-load.animated:nth-child(1) { animation-delay: 0.1s; }
+        .stagger-load.animated:nth-child(2) { animation-delay: 0.2s; }
+        .stagger-load.animated:nth-child(3) { animation-delay: 0.3s; }
+        .stagger-load.animated:nth-child(4) { animation-delay: 0.4s; }
+        .stagger-load.animated:nth-child(5) { animation-delay: 0.5s; }
+        .stagger-load.animated:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-text {
+            overflow: hidden;
+            border-right: 3px solid #2563eb;
+            white-space: nowrap;
+            margin: 0 auto;
+            width: 0;
+            animation: typing 3.5s steps(40, end) forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #2563eb; }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #2563eb, #1e40af, #f59e0b, #d97706);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .ripple-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .ripple-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .bounce-cta {
+            animation: bounce 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 30px rgba(37, 99, 235, 0.6);
+            }
+        }
+
+        .admission-pulse {
+            animation: admissionAlert 3s ease-in-out infinite;
+            display: block;
+        }
+
+        @keyframes admissionAlert {
+            0%, 100% {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                transform: scale(1);
+            }
+            50% {
+                background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+                transform: scale(1.02);
+            }
+        }
+
+        .header-reveal {
+            animation: headerReveal 1s ease-out;
+        }
+
+        @keyframes headerReveal {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-animate.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .branch-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .branch-card:hover::before {
+            left: 100%;
+        }
+
+        .branch-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #1e293b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+        }
+
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .campus-map {
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23e2e8f0"/><rect x="50" y="50" width="100" height="80" fill="%23667eea" opacity="0.7"/><rect x="200" y="80" width="120" height="60" fill="%23f59e0b" opacity="0.7"/><rect x="80" y="180" width="140" height="70" fill="%2310b981" opacity="0.7"/><rect x="250" y="170" width="100" height="90" fill="%23ef4444" opacity="0.7"/></svg>');
+            background-size: cover;
+            border-radius: 15px;
+            min-height: 300px;
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-marker:hover {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .map-marker::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .news-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 0;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.open {
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-item:not(:last-child)::after {
+            content: '/';
+            margin: 0 10px;
+            color: #64748b;
+        }
+
+        /* Enhanced Styles */
+        .faculty-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-slider {
+            position: relative;
+        }
+
+        .testimonial-slide {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .testimonial-slide::-webkit-scrollbar {
+            display: none;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+            }
+        }
+
+        .live-chat {
+            animation: pulse-glow 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .faculty-card {
+                margin-bottom: 1rem;
+            }
+            
+            .testimonial-slide {
+                padding-bottom: 1rem;
+            }
+            
+            .live-chat {
+                bottom: 4rem;
+                right: 1rem;
+            }
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .enhanced-form input:focus,
+        .enhanced-form select:focus,
+        .enhanced-form textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Live Chat Support -->
+    <div id="liveChat" class="fixed bottom-6 left-6 z-50 live-chat">
+        <div class="bg-green-500 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg cursor-pointer hover:bg-green-600 transition-colors">
+            <i class="fas fa-comments text-xl"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg header-reveal">
+        <div class="admission-pulse bg-theme-color-2 sm-text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 pt-10 pb-5">
+                        <div class="widget no-border m-0">
+                            <marquee behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" class="text-white">
+                                Welcome to Sree Siddarameshwara Polytechnic, Tiptur | 2025-26 Admissions are Open | (Recognised by the Govt. of Karnataka and Approved by AICTE New Delhi)
+                            </marquee>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-4 floating">
+                        <i class="fas fa-graduation-cap text-blue-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold typing-text">Sree Siddarameshwara Polytechnic, Tiptur</h1>
+                        <p class="text-blue-100">Hassan Road, Tiptur, Tumkur Dist-572201</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="tel:08134253695" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-phone mr-2"></i>Call
+                    </a>
+                    <a href="mailto:sspt485@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-envelope mr-2"></i>Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <div class="breadcrumb-item">
+                <a href="#" class="text-blue-600 hover:underline">Home</a>
+            </div>
+            <div class="breadcrumb-item">
+                <span class="text-gray-600">SSPT Hub</span>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <section class="mb-16">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center scroll-animate">
+                    <div class="counter" data-target="896">0</div>
+                    <p class="text-gray-600">Students</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center scroll-animate">
+                    <div class="counter" data-target="6">0</div>
+                    <p class="text-gray-600">Branches</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center scroll-animate">
+                    <div class="counter" data-target="85">0</div>
+                    <p class="text-gray-600">Faculty</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center scroll-animate">
+                    <div class="counter" data-target="95">0</div>
+                    <p class="text-gray-600">Placement %</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- College Information -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center animated-gradient">College Information</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-map-marker-alt text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Address</h3>
+                            <p class="text-gray-600">Hassan Road, Tiptur, Tumkur Dist-572201</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-phone text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Phone</h3>
+                            <p class="text-gray-600">08134-253695</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-envelope text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Email</h3>
+                            <p class="text-gray-600">sspt485@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-globe text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Website</h3>
+                            <p class="text-gray-600">www.sspttiptur.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-code text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">College Code</h3>
+                            <p class="text-gray-600">485</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 floating-slow">
+                            <i class="fas fa-user-tie text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Principal</h3>
+                            <p class="text-gray-600">Bharath H P</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="mt-8 grid grid-cols-2 gap-4">
+                    <button onclick="showBranches()" class="ripple-btn pulse-glow bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-building mr-2"></i>Branches
+                    </button>
+                    <button onclick="showBusInfo()" class="ripple-btn bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        <i class="fas fa-bus mr-2"></i>Bus Info
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Assistant Interface -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col scroll-animate">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3 chatbot-icon">
+                            <i class="fas fa-robot text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold">SSPT College Assistant</h2>
+                            <p class="text-blue-100 text-sm">Ask me about branches, seats, bus routes, and more!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages Container -->
+                <div id="chatMessages" class="chat-container flex-1 p-4 overflow-y-auto max-h-96">
+                    <!-- Welcome Message -->
+                    <div class="bot-message p-4 mb-4 max-w-xs message-transition message-send">
+                        <div class="flex items-start space-x-2">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-robot text-white text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm">Hello! Welcome to Sree Siddarameshwara Polytechnic!</p>
+                                <p class="text-sm mt-2">I'm your college assistant. How can I help you today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Suggestions -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <button onclick="askQuestion('Branches')" class="ripple-btn bg-blue-100 text-blue-800 text-xs p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                            Branches Info
+                        </button>
+                        <button onclick="askQuestion('Seats')" class="ripple-btn bg-blue-100 text-blue-800 text-xs p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                            Seat Availability
+                        </button>
+                        <button onclick="askQuestion('Bus')" class="ripple-btn bg-blue-100 text-blue-800 text-xs p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                            Bus Routes
+                        </button>
+                        <button onclick="askQuestion('CS')" class="ripple-btn bg-blue-100 text-blue-800 text-xs p-2 rounded-lg hover:bg-blue-200 transition-colors">
+                            CS Department
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Input Area -->
+                <div class="border-t border-gray-200 p-4">
+                    <div class="flex space-x-3">
+                        <input 
+                            type="text" 
+                            id="userInput" 
+                            placeholder="Type your question here..." 
+                            class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onkeypress="handleKeyPress(event)"
+                        >
+                        <button 
+                            onclick="sendMessage()" 
+                            class="ripple-btn bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors"
+                        >
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campus Map Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Campus Map</h2>
+            <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                <div class="campus-map">
+                    <div class="map-marker" style="top: 30%; left: 25%;" data-title="Computer Science Department" data-description="Building with state-of-the-art computer labs"></div>
+                    <div class="map-marker" style="top: 40%; left: 60%;" data-title="Library" data-description="Central library with extensive collection"></div>
+                    <div class="map-marker" style="top: 70%; left: 40%;" data-title="Administration Block" data-description="Principal and administrative offices"></div>
+                    <div class="map-marker" style="top: 65%; left: 75%;" data-title="Auditorium" data-description="Main auditorium for events and seminars"></div>
+                </div>
+                <div id="map-info" class="mt-4 p-4 bg-blue-50 rounded-lg hidden">
+                    <h3 class="font-bold text-lg" id="map-title"></h3>
+                    <p id="map-description"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- News & Events Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">News & Events</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="news-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate">
+                    <div class="h-40 bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Annual Tech Fest 2025</h3>
+                        <p class="text-gray-600 mb-4">Join us for the biggest technical festival of the year with competitions, workshops, and guest lectures.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-calendar mr-1"></i> March 15-17, 2025</span>
+                            <span><i class="far fa-clock mr-1"></i> 9:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="news-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate">
+                    <div class="h-40 bg-gradient-to-r from-green-500 to-teal-500 flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Placement Drive</h3>
+                        <p class="text-gray-600 mb-4">Leading companies visiting campus for recruitment of final year students.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-calendar mr-1"></i> April 5-7, 2025</span>
+                            <span><i class="far fa-clock mr-1"></i> 10:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="news-card bg-white rounded-2xl shadow-lg overflow-hidden scroll-animate">
+                    <div class="h-40 bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center">
+                        <i class="fas fa-chalkboard-teacher text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2">Faculty Development Program</h3>
+                        <p class="text-gray-600 mb-4">Advanced teaching methodologies workshop for faculty members.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span><i class="far fa-calendar mr-1"></i> February 20-22, 2025</span>
+                            <span><i class="far fa-clock mr-1"></i> 9:30 AM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- College Gallery Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Sri Siddarameshwara Polytechnic Gallery</h2>
+            
+            <!-- Option 1: Fixed ImgBB Direct URLs -->
+            <div class="gallery-grid">
+                <!-- Photo 1 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/8Lpw1SqK/image1.jpg" alt="College Campus" onerror="this.src='https://via.placeholder.com/300x200/4F46E5/FFFFFF?text=Campus+View'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        SSPT Main Campus Building
+                    </div>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/hFf6FdLx/image2.jpg" alt="College Entrance" onerror="this.src='https://via.placeholder.com/300x200/DC2626/FFFFFF?text=Main+Entrance'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        College Main Entrance
+                    </div>
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/KxbDDykg/image3.jpg" alt="Academic Block" onerror="this.src='https://via.placeholder.com/300x200/059669/FFFFFF?text=Academic+Block'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Academic Block A
+                    </div>
+                </div>
+
+                <!-- Photo 4 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/2Y5Xt6Xj/image4.jpg" alt="College Infrastructure" onerror="this.src='https://via.placeholder.com/300x200/7C3AED/FFFFFF?text=Infrastructure'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        College Infrastructure View
+                    </div>
+                </div>
+
+                <!-- Photo 5 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/QLV6hq5/image5.jpg" alt="Campus Ground" onerror="this.src='https://via.placeholder.com/300x200/EA580C/FFFFFF?text=Campus+Ground'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Campus Ground & Garden
+                    </div>
+                </div>
+
+                <!-- Photo 6 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/1G2ZKF46/image6.jpg" alt="College Building" onerror="this.src='https://via.placeholder.com/300x200/475569/FFFFFF?text=Admin+Block'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Administrative Block
+                    </div>
+                </div>
+
+                <!-- Photo 7 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/XkGX5VHm/image7.jpg" alt="College View" onerror="this.src='https://via.placeholder.com/300x200/0D9488/FFFFFF?text=Panoramic+View'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Panoramic College View
+                    </div>
+                </div>
+
+                <!-- Photo 8 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/p6mrRhbK/image8.jpg" alt="Campus Area" onerror="this.src='https://via.placeholder.com/300x200/9333EA/FFFFFF?text=Campus+Area'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Campus Area & Parking
+                    </div>
+                </div>
+
+                <!-- Photo 9 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/WWWDWD1X/image9.jpg" alt="College Building" onerror="this.src='https://via.placeholder.com/300x200/E11D48/FFFFFF?text=Side+View'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        College Building Side View
+                    </div>
+                </div>
+
+                <!-- Photo 10 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/Q3gbbT81/image10.jpg" alt="College Architecture" onerror="this.src='https://via.placeholder.com/300x200/CA8A04/FFFFFF?text=Architecture'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Modern College Architecture
+                    </div>
+                </div>
+
+                <!-- Photo 11 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/ds7DMnZ5/image11.jpg" alt="Campus Facility" onerror="this.src='https://via.placeholder.com/300x200/65A30D/FFFFFF?text=Sports+Facility'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        Campus Sports Facility
+                    </div>
+                </div>
+
+                <!-- Photo 12 -->
+                <div class="gallery-item scroll-animate">
+                    <img src="https://i.ibb.co/Hfb0NNg4/image12.jpg" alt="College Ground" onerror="this.src='https://via.placeholder.com/300x200/BE123C/FFFFFF?text=Playground'">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                        College Playground Area
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mt-8">
+                <button id="loadMoreBtn" class="ripple-btn bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Load More Photos
+                </button>
+            </div>
+        </section>
+<!-- Campus Video Section -->
+<section class="mt-16">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">
+        Campus Video Tour
+    </h2>
+
+    <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+        <p class="text-gray-600 text-center mb-6">
+            Take a virtual tour of our campus facilities, classrooms, and student life at Sree Siddarameshwara Polytechnic, Tiptur.
+        </p>
+
+        <!-- Google Drive Video Embed -->
+        <div class="flex justify-center">
+            <div class="w-full max-w-4xl">
+                <div class="aspect-video bg-gray-900 rounded-xl shadow-lg overflow-hidden">
+                    <iframe 
+                        src="https://drive.google.com/file/d/1iLfHw_PgYrkxYtLsqi0RqorCiyjjDGuX/preview"
+                        class="w-full h-full"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen
+                        frameborder="0"
+                        title="SSPT Campus Tour">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p class="text-sm text-gray-500">
+                Experience our campus through this virtual tour
+            </p>
+        </div>
+    </div>
+</section>
+
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-500">
+      </p>
+    </div>
+  </div>
+</section>
+
+}
+
+
+<!-- Lightbox Modal -->
+        <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
+            <div class="relative max-w-4xl max-h-full">
+                <img id="lightbox-img" src="" alt="Gallery Image" class="max-w-full max-h-full">
+                <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-70 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button id="prev-btn" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-70 transition-colors">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="next-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-70 transition-colors">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div id="lightbox-caption" class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4 text-center"></div>
+            </div>
+        </div>
+
+        <!-- Faculty Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Our Faculty</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Faculty Card 1 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-user-tie text-blue-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Dr. Bharath H P</h4>
+                    <p class="text-blue-600 font-semibold">Principal</p>
+                    <p class="text-gray-600 text-sm mt-2">PhD in Computer Science, 15+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:9739781323" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 2 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-green-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof. Kavitha T R</h4>
+                    <p class="text-green-600 font-semibold">HOD - Computer Science</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Computer Science, 12+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:8867480067" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 3 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-green-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof. Nagendra N</h4>
+                    <p class="text-green-600 font-semibold">HOD - Mechanical Engineering</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Mechanical Engg, 9+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:7975080213" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 4 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-green-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof. Priya Sharma</h4>
+                    <p class="text-green-600 font-semibold">HOD - Apparel Design & Fabrication Technology (ADFT)</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Apparel Design & Fabrication Technology (ADFT), 9+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:8867480067" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 5 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-green-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof. Sachidananda Swamy HS</h4>
+                    <p class="text-green-600 font-semibold">HOD - Electronics & Communication</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Electronics & Communication Engg, 11+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:7483959500" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 6 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-green-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof.  Lingaraja AR</h4>
+                    <p class="text-green-600 font-semibold">HOD - Electrical & Electronics</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Electrical & Electronics Engg, 11+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:7975634653" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Faculty Card 7 -->
+                <div class="faculty-card bg-gray-50 rounded-xl p-6 text-center transition-all duration-300 hover:shadow-lg hover:transform hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-red-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-hard-hat text-red-600 text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">Prof. AC Manju</h4>
+                    <p class="text-red-600 font-semibold">HOD - Civil Engineering</p>
+                    <p class="text-gray-600 text-sm mt-2">M.Tech in Structural Engineering, 10+ years experience</p>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <a href="tel:9743738230" class="ripple-btn bounce-cta bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-phone mr-2"></i>Call
+                        </a>
+                        <a href="mailto:kavithatr@gmail.com" class="ripple-btn bg-white text-blue-600 px-4 py-2 rounded-full font-semibold hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placement Statistics Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Placement Statistics</h2>
+            <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Placement Highlights 2024</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span>Highest Package</span>
+                                <span class="font-bold text-green-600">₹4.5 LPA</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Average Package</span>
+                                <span class="font-bold text-blue-600">₹3.2 LPA</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Placement Percentage</span>
+                                <span class="font-bold text-purple-600">95%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Companies Visited</span>
+                                <span class="font-bold text-orange-600">45+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4">Top Recruiters</h4>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fab fa-microsoft text-blue-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">Microsoft</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fab fa-google text-red-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">Google</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fab fa-amazon text-orange-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">Amazon</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fab fa-infinity text-purple-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">Infosys</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fas fa-cog text-teal-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">TCS</span>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                <i class="fas fa-brain text-indigo-600 text-2xl mb-2"></i>
+                                <span class="text-sm font-semibold">Wipro</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+        <!-- Branches Section -->
+        <section id="branches" class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Our Branches</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- CS Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-laptop-code text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Computer Science (CS)</h3>
+                        <p class="text-red-600 font-bold">Seats: Full (62/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> KAVITHA </p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">CS Blocks:</h4>
+                            <p>1st Year: 74 students(G: 29, B:45 )</p>
+                            <p>2nd Year: 48 students(G: 20, B:28 )</p>
+                            <p>3rd Year: 66 students(G: 32, B:34 )</p>
+                            <p>Total num of student: 188</p>
+                            <p>Total num of Girl's: 81</p>
+                            <p>Total num of Boy's: 107</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CE Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-hard-hat text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Civil Engineering (CE)</h3>
+                        <p class="text-green-600 font-bold">Seats: 10 Available (52/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> Prof. Suresh Patel</p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">CE Blocks:</h4>
+                            <p>1st Year: 50 students(G: 11, B:39 )</p>
+                            <p>2nd Year: 20 students(G: 05, B:15 )</p>
+                            <p>3rd Year: 21 students(G: 05, B:16 )</p> 
+                            <p>Total num of student: 91</p>
+                            <p>Total num of Girl's: 21</p>
+                            <p>Total num of Boy's: 70</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EC Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-microchip text-red-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Electronics & Communication (EC)</h3>
+                        <p class="text-red-600 font-bold">Seats: Full (62/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> Dr. Anitha Reddy</p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">EC Blocks:</h4>
+                            <p>1st Year: 69 students(G: 15, B:54 )</p>
+                            <p>2nd Year: 57 students(G: 13, B:44 )</p>
+                            <p>3rd Year: 58 students(G: 17, B:41 )</p>
+                            <p>Total num of student: 184</p>
+                            <p>Total num of Girl's: 45</p>
+                            <p>Total num of Boy's: 139</p>
+                        </div>
+                    </div> 
+                </div>
+
+                <!-- EEE Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-bolt text-yellow-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Electrical & Electronics (EEE)</h3>
+                        <p class="text-yellow-600 font-bold">Seats: 4 Available (58/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> Prof. Mahesh Joshi</p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">EEE Blocks:</h4>
+                            <p>1st Year: 67 students(G: 08, B:59 )</p>
+                            <p>2nd Year: 52 students(G: 07, B:45 )</p>
+                            <p>3rd Year: 56 students(G: 08, B:48 )</p> 
+                            <p>Total num of student: 175</p>
+                            <p>Total num of Girl's: 23</p>
+                            <p>Total num of Boy's: 152</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ME Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-cogs text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Mechanical Engineering (ME)</h3>
+                        <p class="text-yellow-600 font-bold">Seats: 4 Available (58/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> Dr. Vikram Singh</p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">ME Blocks:</h4>
+                            <p>1st Year: 70 students(G: 03, B:67 )</p>
+                            <p>2nd Year: 60 students(G: 00, B:60 )</p>
+                            <p>3rd Year: 57 students(G: 00, B:57 )</p>
+                            <p>Total num of student: 187</p>
+                            <p>Total num of Girl's: 3</p>
+                            <p>Total num of Boy's: 184</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADFT Branch -->
+                <div class="branch-card bg-white rounded-2xl shadow-lg p-6 stagger-load scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-tshirt text-pink-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Apparel Design & Fabrication Technology (ADFT)</h3>
+                        <p class="text-green-600 font-bold">Seats: 10 Available (52/62)</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>HOD:</strong> Prof. Priya Sharma</p>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">ADFT Blocks:</h4>
+                            <p>1st Year: 34 students(G: 34, B:00 )</p>
+                            <p>2nd Year: 13 students(G: 13, B:00 )</p>
+                            <p>3rd Year: 06 students(G: 06, B:00 )</p>
+                            <p>Total num of student: 51</p>
+                            <p>Total num of Girl's: 51</p>
+                            <p>Total num of Boy's: 00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">Frequently Asked Questions</h2>
+            <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type="text" id="faqSearch" placeholder="Search FAQs..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="font-semibold text-lg">What are the admission requirements?</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-2 text-gray-600">Admission requires completion of 10th standard with minimum 35% marks. Selection is based on merit and availability of seats in respective branches.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="font-semibold text-lg">What is the fee structure?</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-2 text-gray-600">The total fee is approximately ₹29,000 per year, which includes admission fees (₹6,595), government fees (₹13,405), form fees (₹4,000), and college fees (₹5,000).</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="font-semibold text-lg">Are hostel facilities available?</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-2 text-gray-600">Yes, we provide separate hostel facilities for boys and girls with modern amenities, security, and mess facilities.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3 class="font-semibold text-lg">What are the placement opportunities?</h3>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-2 text-gray-600">We have a dedicated placement cell with 95% placement rate. Top companies from various sectors visit our campus for recruitment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bus Information Section -->
+        <section id="bus" class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 scroll-animate animated-gradient">College Bus Services</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Bus 1 -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-bus text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Bus 1: Tiptur Route</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>Route:</strong> Around Tiptur area</p>
+                        <p class="text-gray-600"><strong>Driver:</strong> Rajesh Kumar</p>
+                        <p class="text-gray-600"><strong>Contact:</strong> 9876543210</p>
+                        <p class="text-gray-600"><strong>Registration num:</strong>KA 44 EA 7852</p>
+                    </div>
+                </div>
+
+                <!-- Bus 2 -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-bus text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Bus 2: Turukere Route</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>Route:</strong> Turuvekere to College</p>
+                        <p class="text-gray-600"><strong>Driver:</strong> Suresh Gowda</p>
+                        <p class="text-gray-600"><strong>Contact:</strong> 8765432109</p>
+                        <p class="text-gray-600"><strong>Registration num:</strong>KA 44 CD 6682</p>
+                    </div>
+                </div>
+
+                <!-- Bus 3 -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 scroll-animate">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 floating">
+                            <i class="fas fa-bus text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Bus 3: Arisikere Route</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><strong>Route:</strong> Arisikere to College</p>
+                        <p class="text-gray-600"><strong>Driver:</strong> Mohan Kumar</p>
+                        <p class="text-gray-600"><strong>Contact:</strong> 7654321098</p>
+                        <p class="text-gray-600"><strong>Registration num:</strong>KA 44 AE 6802 </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="scroll-animate">
+                    <h3 class="text-xl font-bold mb-4">Contact Information</h3>
+                    <p class="mb-2">Hassan Road, Tiptur, Tumkur Dist-572201</p>
+                    <p class="mb-2">Phone: 08134-253695</p>
+                    <p class="mb-2">Email: <a href="mailto:sspt485@gmail.com" class="text-blue-400 hover:underline">sspt485@gmail.com</a></p>
+                    <p>Website: <a href="http://www.sspttiptur.com" class="text-blue-400 hover:underline">www.sspttiptur.com</a></p>
+                </div>
+                <div class="scroll-animate">
+                    <h3 class="text-xl font-bold mb-4">Follow Us</h3>
+                    <p class="mb-2"><a href="https://www.facebook.com/share/16xbAmzHUZ/" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">Facebook</a></p>
+                    <p class="mb-2"><a href="#" class="text-blue-400 hover:underline">Twitter</a></p>
+                    <p class="mb-2"><a href="https://www.instagram.com/dept_computer_science?igsh=Z2t4djdweTNpYXVl" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+                </div>  
+                <div class="scroll-animate">
+                    <h5 class="widget-title line-bottom text-xl font-bold mb-4">Working Hours</h5>
+                    <ul class="list angle-double-right list-border">
+                        <li><a>Mon - Fri : 09.30 am - 05.30 pm</a></li>
+                        <li><a>Saturday : 09.30 am - 01.30 pm</a></li>
+                        <li><a>Sunday : Closed</a> </li>
+                        <li><a><b>Website Visitors : null</b></a></li>
+                    </ul>
+                </div>
+                <div class="scroll-animate">
+                    <h3 class="text-xl font-bold mb-4">OFFICIAL WEBSITE</h3>
+                    <p class="mb-2"><a href="https://tipturhudgad-cloud.github.io/prograss-report/" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">Parent portal</a></p>
+                    <p class="mb-2"><a href="https://sheethaldgowda13-eng.github.io/project-app/" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">Attendance</a></p>
+                </div>
+                <div class="scroll-animate">
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <p class="mb-2"><a href="#branches" class="text-blue-400 hover:underline">Our Branches</a></p>
+                    <p class="mb-2"><a href="#bus" class="text-blue-400 hover:underline">Bus Information</a></p>
+                    <p class="mb-2"><a href="#" class="text-blue-400 hover:underline">Contact Us</a></p>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-4 border-t border-gray-700">
+                <p>© 2025 SSPT College. All rights reserved. | College Code: 485</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Assistant functionality
+        let chatHistory = [];
+        
+        function showBranches() {
+            document.getElementById('branches').scrollIntoView({ behavior: 'smooth' });
+            addBotMessage("Here are all our engineering branches. Each branch has specific seat availability and dedicated faculty members.");
+        }
+        
+        function showBusInfo() {
+            document.getElementById('bus').scrollIntoView({ behavior: 'smooth' });
+            addBotMessage("Here are our college bus services. We have multiple routes covering different areas around Tiptur.");
+        }
+        
+        function askQuestion(topic) {
+            let question = "";
+            let response = "";
+            
+            switch(topic) {
+                case 'Branches':
+                    question = "What branches do you offer?";
+                    response = "We offer 6 branches :-<br>Computer Science (CSE)<br>Civil Engineering (CEE)<br>Electronics & Communication (ECE)<br>Electrical & Electronics (EEE)<br>Mechanical Engineering (MEE)<br>Apparel Design & Fabrication Technology (ADFT).";
+                    break;
+                case 'Seats':
+                    question = "What is the seat availability?";
+                    response = "Seat availability varies by branch:-<br>CSE is full (62/62)<br>ECE is full (62/62)<br>CE have 5 seats available  (57/62)<br>ADFT have 10 seats available (52/62)<br>EEE have 4 seats available(58/62)<br>ME have 4 seats available (58/62).";
+                    break;
+                case 'Bus':
+                    question = "Tell me about bus routes";
+                    response = "We have 3 bus routes:-<br>Tiptur Route (Driver: Rajesh Kumar)<br>Turuvekere Route (Driver: Suresh Gowda)<br>Aresikere Route (Driver: Mohan Kumar).<br>Each bus has specific pickup points.";
+                    break;
+                case 'CS':
+                    question = "Tell me about CS department";
+                    response = "The Computer Science department HOD is Kavitha<br>We have 188 students in Computer Science department<br>We have 74 students in 1st year<br>We have 48 student in 2nd year<br>We have 66 student in 3rd year.";
+                    break;
+            }
+            
+            addUserMessage(question);
+            setTimeout(() => {
+                addBotMessage(response);
+            }, 1000);
+        }
+           
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addUserMessage(message);
+                input.value = '';
+                
+                // Simulate bot typing
+                const typingElement = showTypingIndicator();
+                
+                setTimeout(() => {
+                    removeTypingIndicator(typingElement);
+                    const response = generateResponse(message);
+                    addBotMessage(response);
+                }, 1500);
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function addUserMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'user-message p-4 mb-4 max-w-xs message-transition message-send ml-auto';
+            messageDiv.innerHTML = `
+                <div class="flex items-start space-x-2 justify-end">
+                    <div>
+                        <p class="text-sm">${message}</p>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatHistory.push({ type: 'user', message });
+        }
+        
+        function addBotMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'bot-message p-4 mb-4 max-w-xs message-transition message-send';
+            messageDiv.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-robot text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-sm">${message}</p>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatHistory.push({ type: 'bot', message });
+        }
+        
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'bot-message p-4 mb-4 max-w-xs message-transition';
+            typingDiv.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-robot text-white text-sm"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return typingDiv;
+        }
+        
+        function removeTypingIndicator(typingElement) {
+            typingElement.remove();
+        }
+        
+        function generateResponse(message) {
+            message = message.toLowerCase();
+            
+            if (message.includes('branch') || message.includes('course') || message.includes('department')) {
+                return "We offer 6 branches: CS, CE, EC, EEE, ME, and ADFT. Each branch has qualified faculty and modern facilities. Would you like to know about a specific branch?";
+            }
+             else if (message.includes('timing') || message.includes('time')|| message.includes('time table')) {
+                return "College start at 9:30 AM To 5:00 PM.<br>Lunch break at 1:00 PM to 2:00 pm.<br>Every class 1 Hour period";
+            }
+            else if (message.includes('seat') || message.includes('availability') || message.includes('admission')) {
+                return "Seat availability: CS (Full), CE (10 seats), EC (Full), EEE (4 seats), ME (4 seats), ADFT (10 seats). Total seats per branch: 62.";
+            }
+            
+             
+            else if (message.includes('bus') || message.includes('transport') || message.includes('route')) {
+                return "We have 3 bus routes <br>1. Tiptur<br>2. Turuvekere<br>3. Arisikere areas.<br> Each bus has an experienced driver.In case of rash drive call this number :9353169624";
+            }
+            else if (message.includes('cs') || message.includes('computer')) {
+                return "Computer Science department is our most popular branch with Kavitha T R as HOD.Staff are Vinutha M S and Namitha M S";
+            }
+            else if (message.includes('fee') || message.includes('payment') || message.includes('cost')) {
+                return "The fee structure varies by branch.College full is 29000<br>6,595 for admission fees <br>13,405 is pay on bank its ia Govt fees<br>4000 for form fees<br>5000 for college fees <br>For detailed fee information, please contact the administration office at 08134-253695.";
+            }
+            else if (message.includes('contact') || message.includes('phone') || message.includes('email')) {
+                return "You can contact us at: Phone: 08134-253695 <br>Email: sspt485@gmail.com<br> Address: Hassan Road, Tiptur, Tumkur Dist-572201";
+            }
+            else if (message.includes('1st year') || message.includes('1st sem') || message.includes('2nd sem')){
+               return "Total number of student is 75<br>Girls : 29 <br> Boys : 45";
+            }
+             else if (message.includes('2nd year') || message.includes('3rd sem') || message.includes('4th sem')){
+                return "Total number of student is 48<br>Girls : 20 <br> Boys : 28";
+            }
+           
+            else if (message.includes('3rd year') || message.includes('5th sem') || message.includes('6th sem')) {
+                return "Total number of student is 66<br>Girls : 32 <br> Boys : 34";
+            }
+           
+           
+            else {
+                return "I'm here to help you with information about<br> Our college branches<br> Seat availability<br> Bus routes<br>1 year std details<br>2 year std details<br>3 year std details<br>Contact<br> Feel free to ask specific questions!";
+            }
+        }
+
+
+        // Enhanced interactive features for SSPT Hub
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            initScrollAnimations();
+            initRippleEffects();
+            initCounters();
+            initMapMarkers();
+            initDarkMode();
+            initBackToTop();
+            initFaqSearch();
+            initGalleryLightbox();
+            initLiveChat();
+            
+            // Add floating animation to elements
+            const floatingElements = document.querySelectorAll('.branch-card, .feature-card');
+            floatingElements.forEach((el, index) => {
+                el.classList.add('floating');
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Apply typing animation to specific headings
+            const typingHeadings = document.querySelectorAll('.typing-text');
+            typingHeadings.forEach(heading => {
+                // Ensure the heading has the correct initial state
+                heading.style.width = '0';
+                heading.style.overflow = 'hidden';
+            });
+        });
+        
+        // Scroll animation implementation
+        function initScrollAnimations() {
+            const animatedElements = document.querySelectorAll('.scroll-animate, .stagger-load');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, { 
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            animatedElements.forEach(el => observer.observe(el));
+        }
+
+        // Ripple effect implementation
+        function initRippleEffects() {
+            const buttons = document.querySelectorAll('.ripple-btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Remove existing ripples
+                    const existingRipples = this.querySelectorAll('.ripple-effect');
+                    existingRipples.forEach(ripple => ripple.remove());
+                    
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.className = 'ripple-effect';
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        if (ripple.parentNode) {
+                            ripple.parentNode.removeChild(ripple);
+                        }
+                    }, 600);
+                });
+            });
+            
+            // Add ripple animation keyframes dynamically
+            if (!document.querySelector('#ripple-styles')) {
+                const style = document.createElement('style');
+                style.id = 'ripple-styles';
+                style.textContent = `
+                    @keyframes ripple {
+                        to {
+                            transform: scale(4);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Counter animation
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const increment = target / 200;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.innerText = Math.ceil(current);
+                        setTimeout(updateCounter, 10);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                
+                // Start counter when element is in view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCounter();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(counter);
+            });
+        }
+
+        // Map markers functionality
+        function initMapMarkers() {
+            const markers = document.querySelectorAll('.map-marker');
+            const mapInfo = document.getElementById('map-info');
+            const mapTitle = document.getElementById('map-title');
+            const mapDescription = document.getElementById('map-description');
+            
+            markers.forEach(marker => {
+                marker.addEventListener('click', function() {
+                    const title = this.getAttribute('data-title');
+                    const description = this.getAttribute('data-description');
+                    
+                    mapTitle.textContent = title;
+                    mapDescription.textContent = description;
+                    mapInfo.classList.remove('hidden');
+                });
+            });
+        }
+
+        // Dark mode functionality
+        function initDarkMode() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const icon = darkModeToggle.querySelector('i');
+            
+            // Check for saved theme preference or respect OS preference
+            if (localStorage.getItem('darkMode') === 'enabled' || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('darkMode'))) {
+                document.body.classList.add('dark-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+        }
+
+        // Back to top functionality
+        function initBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // FAQ functionality
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const icon = faqItem.querySelector('.faq-icon');
+            
+            answer.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        // FAQ Search functionality
+        function initFaqSearch() {
+            const faqSearch = document.getElementById('faqSearch');
+            if (faqSearch) {
+                faqSearch.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const faqItems = document.querySelectorAll('.faq-item');
+                    
+                    faqItems.forEach(item => {
+                        const question = item.querySelector('.faq-question h3').textContent.toLowerCase();
+                        if (question.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        }
+
+        // Gallery Lightbox functionality
+        function initGalleryLightbox() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    const caption = this.querySelector('div').textContent;
+                    
+                    openLightbox(imgSrc, caption);
+                });
+            });
+        }
+
+        function openLightbox(src, caption) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            
+            lightboxImg.src = src;
+            lightboxCaption.textContent = caption;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Live Chat Implementation
+        function initLiveChat() {
+            const liveChat = document.getElementById('liveChat');
+            liveChat.addEventListener('click', function() {
+                const chatWindow = document.createElement('div');
+                chatWindow.className = 'fixed bottom-24 right-6 w-80 bg-white rounded-2xl shadow-2xl z-50';
+                chatWindow.innerHTML = `
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-2xl">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-headset mr-2"></i>
+                                <span class="font-semibold">Live Support</span>
+                            </div>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-white">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 max-h-80 overflow-y-auto">
+                        <div class="bg-blue-100 rounded-lg p-3 mb-3">
+                            <p class="text-sm">Hello! How can I help you with admissions today?</p>
+                        </div>
+                        <div class="space-y-3">
+                            <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm transition-colors" onclick="askAdmissionQuestion(this)">
+                                Admission Process
+                            </button>
+                            <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm transition-colors" onclick="askAdmissionQuestion(this)">
+                                Fee Structure
+                            </button>
+                            <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm transition-colors" onclick="askAdmissionQuestion(this)">
+                                Document Requirements
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t">
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Type your message..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(chatWindow);
+            });
+        }
+
+        function askAdmissionQuestion(button) {
+            const question = button.textContent;
+            const responseContainer = button.parentElement.parentElement;
+            
+            // Add user question
+            const userMsg = document.createElement('div');
+            userMsg.className = 'bg-blue-600 text-white rounded-lg p-3 mb-3 ml-8';
+            userMsg.innerHTML = `<p class="text-sm">${question}</p>`;
+            responseContainer.appendChild(userMsg);
+            
+            // Simulate response
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'bg-green-100 rounded-lg p-3 mb-3';
+                
+                let response = '';
+                if (question.includes('Admission Process')) {
+                    response = 'Admission process: 1. Fill online form 2. Submit documents 3. Merit-based selection 4. Fee payment 5. Enrollment';
+                } else if (question.includes('Fee Structure')) {
+                    response = 'Total fees: ₹29,000/year (including all charges). Payment options available.';
+                } else if (question.includes('Document Requirements')) {
+                    response = 'Required: 10th marks card, transfer certificate, caste certificate (if applicable), Aadhar copy, and passport photos.';
+                }
+                
+                botMsg.innerHTML = `<p class="text-sm">${response}</p>`;
+                responseContainer.appendChild(botMsg);
+                responseContainer.scrollTop = responseContainer.scrollHeight;
+            }, 1000);
+        }
+
+        // Download Brochure Feature
+        function downloadBrochure() {
+            // Simulate brochure download
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = '#';
+            downloadBtn.innerHTML = `
+                <div class="fixed bottom-24 left-6 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 z-40">
+                    <i class="fas fa-download"></i>
+                    <span>Downloading Brochure...</span>
+                </div>
+            `;
+            document.body.appendChild(downloadBtn);
+            
+            setTimeout(() => {
+                downloadBtn.remove();
+                alert('Brochure downloaded successfully!');
+            }, 2000);
+        }
+
+        // Enhanced chatbot questions
+        const enhancedQuestions = [
+            "What are the library timings?",
+            "Tell me about hostel facilities",
+            "How are the placements?",
+            "What events happen at college?"
+        ];
+
+        // Gallery Filter Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active', 'bg-blue-600', 'text-white'));
+                    filterButtons.forEach(btn => btn.classList.add('bg-gray-200', 'text-gray-700'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active', 'bg-blue-600', 'text-white');
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                item.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let currentImageIndex = 0;
+            const galleryImages = Array.from(galleryItems);
+            
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    const caption = this.querySelector('div').textContent;
+                    
+                    currentImageIndex = index;
+                    openLightbox(imgSrc, caption);
+                });
+            });
+            
+            function showImage(index) {
+                if (index >= 0 && index < galleryImages.length) {
+                    const item = galleryImages[index];
+                    const imgSrc = item.querySelector('img').src;
+                    const caption = item.querySelector('div').textContent;
+                    
+                    lightboxImg.src = imgSrc;
+                    lightboxCaption.textContent = caption;
+                    currentImageIndex = index;
+                }
+            }
+            
+            prevBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showImage(currentImageIndex - 1);
+            });
+            
+            nextBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showImage(currentImageIndex + 1);
+            });
+            
+            // Close lightbox when clicking outside the image
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('flex')) {
+                    if (e.key === 'Escape') {
+                        closeLightbox();
+                    } else if (e.key === 'ArrowLeft') {
+                        showImage(currentImageIndex - 1);
+                    } else if (e.key === 'ArrowRight') {
+                        showImage(currentImageIndex + 1);
+                    }
+                }
+            });
+            
+            // Load More functionality
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            let visibleItems = 12; // Initial number of visible items
+            
+            // Initially hide items beyond the first 12
+            galleryItems.forEach((item, index) => {
+                if (index >= visibleItems) {
+                    item.style.display = 'none';
+                }
+            });
+            
+            loadMoreBtn.addEventListener('click', function() {
+                visibleItems += 6;
+                
+                galleryItems.forEach((item, index) => {
+                    if (index < visibleItems) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 50);
+                    }
+                });
+                
+                // Hide load more button if all items are visible
+                if (visibleItems >= galleryItems.length) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+            
+            // Video functionality
+            setupVideo();
+        });
+        
+        // Video functions
+        function setupVideo() {
+            const video = document.getElementById('campus-video');
+            const videoTime = document.getElementById('video-time');
+            const videoDuration = document.getElementById('video-duration');
+            
+            video.addEventListener('loadedmetadata', function() {
+                videoDuration.textContent = formatTime(video.duration);
+            });
+            
+            video.addEventListener('timeupdate', function() {
+                videoTime.textContent = formatTime(video.currentTime);
+            });
+        }
+        
+        function playVideo() {
+            const video = document.getElementById('campus-video');
+            const overlay = document.querySelector('.video-overlay');
+            
+            if (video.paused) {
+                video.play();
+                overlay.style.display = 'none';
+            } else {
+                video.pause();
+                overlay.style.display = 'flex';
+            }
+        }
+        
+        function toggleMute() {
+            const video = document.getElementById('campus-video');
+            const icon = document.getElementById('volume-icon');
+            
+            video.muted = !video.muted;
+            
+            if (video.muted) {
+                icon.classList.remove('fa-volume-up');
+                icon.classList.add('fa-volume-mute');
+            } else {
+                icon.classList.remove('fa-volume-mute');
+                icon.classList.add('fa-volume-up');
+            }
+        }
+        
+        function toggleFullscreenVideo() {
+            const videoContainer = document.querySelector('.video-container');
+            
+            if (!document.fullscreenElement) {
+                if (videoContainer.requestFullscreen) {
+                    videoContainer.requestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+    </script>
+</body>
+</html>
